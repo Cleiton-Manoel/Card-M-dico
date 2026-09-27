@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#F2C94C" />
+    <title>Validação de Condição de Saúde — Emanuela Carla</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        background: #fffaf0;
+        color: #292929;
+        line-height: 1.55;
+      }
+      .container {
+        width: min(100% - 28px, 760px);
+        margin: auto;
+      }
+      header {
+        background: linear-gradient(135deg, #e6b72f, #f7d65a);
+        color: #3d3107;
+        text-align: center;
+        padding: 25px 18px 28px;
+        border-bottom: 4px solid #d2a719;
+      }
+      .sunflowers {
+        font-size: 35px;
+        letter-spacing: 4px;
+        margin-bottom: 5px;
+      }
+      header h1 {
+        font-size: 23px;
+        line-height: 1.2;
+        margin-bottom: 8px;
+      }
+      header p {
+        font-size: 15px;
+      }
+      .hidden-badge {
+        display: inline-block;
+        margin: 13px auto 0;
+        padding: 9px 15px;
+        border-radius: 30px;
+        background: #fff8d8;
+        border: 1px solid #d8b52f;
+        font-size: 13px;
+        font-weight: bold;
+      }
+      .card {
+        background: #fff;
+        border-radius: 16px;
+        margin: 18px 0;
+        padding: 22px;
+        box-shadow: 0 4px 18px rgba(92, 70, 10, 0.08);
+        border: 1px solid #eee2bd;
+      }
+      .hidden-card {
+        background: #fffdf3;
+        border: 2px solid #e7c744;
+      }
+      .hidden-card h2 {
+        color: #806700;
+      }
+      .symbol {
+        font-size: 39px;
+        float: left;
+        margin: 0 12px 4px 0;
+      }
+      .alert {
+        border: 2px solid #c62828;
+        background: #fff5f5;
+      }
+      .alert h2 {
+        color: #b71c1c;
+        font-size: 20px;
+        margin-bottom: 10px;
+      }
+      .alert strong {
+        color: #a31515;
+      }
+      h2 {
+        font-size: 20px;
+        color: #665300;
+        margin-bottom: 12px;
+      }
+      h3 {
+        font-size: 17px;
+        margin-bottom: 7px;
+        color: #3f3a24;
+      }
+      p {
+        font-size: 15px;
+      }
+      ul {
+        padding-left: 20px;
+      }
+      li {
+        margin: 8px 0;
+        font-size: 15px;
+      }
+      .condition {
+        padding: 16px 0;
+        border-bottom: 1px solid #eee6cf;
+      }
+      .condition:last-child {
+        border-bottom: 0;
+        padding-bottom: 0;
+      }
+      .badge {
+        display: inline-block;
+        background: #fff1a8;
+        color: #655100;
+        border-radius: 20px;
+        padding: 5px 10px;
+        font-size: 12px;
+        font-weight: bold;
+        margin-bottom: 8px;
+      }
+      .doc {
+        border: 2px dashed #d6bd55;
+        border-radius: 12px;
+        padding: 18px;
+        margin: 12px 0;
+        text-align: center;
+        background: #fffdf5;
+      }
+      .doc strong {
+        display: block;
+        margin-bottom: 6px;
+        color: #665300;
+      }
+      .doc span {
+        font-size: 13px;
+        color: #756f5c;
+      }
+      /* Estilo do Botão */
+      .doc button {
+        margin-top: 8px;
+        padding: 6px 12px;
+        border: none;
+        background: #f7d65a;
+        color: #3d3107;
+        font-size: 13px;
+        font-weight: 600;
+        border-radius: 5px;
+        cursor: pointer;
+
+        /* Centralização interna de elementos e remoção da seleção de texto */
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        user-select: none;
+
+        /* Sombra leve inicial */
+        box-shadow: 0 2px 4px rgba(61, 49, 7, 0.12);
+
+        /* Transição suave para todas as interações */
+        transition:
+          transform 0.15s ease,
+          background-color 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+
+      /* Animação ao passar o mouse (Hover) */
+      .doc button:hover {
+        background: #ebd04f; /* Tom levemente mais escuro */
+        transform: translateY(-2px); /* Elevação suave */
+        box-shadow: 0 4px 8px rgba(61, 49, 7, 0.22);
+      }
+
+      /* Animação ao clicar (Active / Click) */
+      .doc button:active {
+        transform: translateY(1px) scale(0.96); /* Efeito de ser pressionado */
+        box-shadow: 0 1px 2px rgba(61, 49, 7, 0.15);
+        transition: transform 0.05s ease;
+      }
+
+      /* Acessibilidade para navegação por teclado */
+      .doc button:focus-visible {
+        outline: 2px solid #3d3107;
+        outline-offset: 2px;
+      }
+
+      .notice {
+        background: #fffaf0;
+        border-left: 4px solid #d4ad24;
+        padding: 13px 15px;
+        border-radius: 5px;
+        font-size: 13px;
+      }
+      footer {
+        text-align: center;
+        padding: 15px 20px 35px;
+        color: #756f5c;
+        font-size: 12px;
+      }
+      @media (max-width: 430px) {
+        header h1 {
+          font-size: 21px;
+        }
+        .card {
+          padding: 18px;
+        }
+        .alert h2 {
+          font-size: 18px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <div class="sunflowers">🌻 🌻 🌻</div>
+        <h1>Validação de Condição de Saúde</h1>
+        <p>Emanuela Carla • Condições crônicas e invisíveis</p>
+        <div class="hidden-badge">🌻 CONDIÇÃO DE SAÚDE INVISÍVEL / OCULTA</div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="card hidden-card">
+        <div class="symbol">🌻</div>
+        <h2>Condições invisíveis</h2>
+        <p>
+          Algumas condições de saúde não apresentam sinais físicos aparentes.
+          Isso não significa que sejam menos reais ou que não possam causar
+          limitações importantes.
+        </p>
+        <br />
+        <p>
+          O girassol é associado internacionalmente à identificação voluntária
+          de necessidades relacionadas a deficiências e condições invisíveis.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2>Olá. Obrigada por escanear o QR Code.</h2>
+        <p>
+          Meu nome é <strong>Emanuela Carla</strong> e convivo com condições
+          crônicas e invisíveis. Nem sempre existem sinais físicos aparentes que
+          permitam perceber minhas limitações.
+        </p>
+        <br />
+        <p>
+          Esta página foi criada para explicar, de forma rápida e transparente,
+          por que posso precisar de algumas acomodações em locais públicos.
+        </p>
+      </section>
+
+      <section class="card alert">
+        <h2>🚨 Prioridade em filas</h2>
+        <p>
+          Devido à <strong>Endometriose Profunda</strong>, posso apresentar
+          dores muito intensas e limitantes ao permanecer em pé por períodos
+          prolongados.
+        </p>
+        <br />
+        <p>
+          <strong
+            >Devido a uma condição de saúde, posso apresentar dores intensas e
+            limitantes ao permanecer muito tempo em pé. Por isso, o atendimento
+            prioritário nesta fila é uma necessidade médica, e não uma
+            preferência..</strong
+          >
+        </p>
+      </section>
+
+      <section class="card alert">
+        <h2>🚨 Acesso urgente ao banheiro</h2>
+        <p>
+          Devido à <strong>Cistite Intersticial e à Bexiga Hiperativa</strong>,
+          posso apresentar uma necessidade súbita, frequente e inadiável de
+          urinar.
+        </p>
+        <br />
+        <p>
+          <strong
+            >Se eu solicitar acesso imediato ao banheiro, trata-se de uma
+            necessidade relacionada à minha condição de saúde, e não de uma
+            preferência.</strong
+          >
+        </p>
+      </section>
+
+      <section class="card">
+        <h2>Como minhas condições podem me afetar</h2>
+
+        <div class="condition">
+          <span class="badge">UROLOGIA</span>
+          <h3>🚻 Cistite Intersticial e Bexiga Hiperativa</h3>
+          <p>
+            Podem causar dor pélvica e urgência urinária intensa e frequente,
+            tornando necessário o acesso rápido ao sanitário.
+          </p>
+        </div>
+
+        <div class="condition">
+          <span class="badge">GINECOLOGIA</span>
+          <h3>🩺 Endometriose Profunda</h3>
+          <p>
+            Pode provocar dores intensas e fadiga, dificultando permanecer em pé
+            durante períodos prolongados.
+          </p>
+        </div>
+
+        <div class="condition">
+          <span class="badge">GASTROENTEROLOGIA</span>
+          <h3>🍽️ SIBO</h3>
+          <p>
+            Pode provocar distensão abdominal, desconforto gastrointestinal e
+            crises imprevisíveis, além de exigir cuidados alimentares
+            específicos.
+          </p>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>🤝 Acomodações que posso precisar</h2>
+        <ul>
+          <li>
+            <strong>Acesso imediato ao banheiro</strong> em situações de
+            urgência.
+          </li>
+          <li>Prioridade ou facilitação no atendimento quando necessário.</li>
+          <li>
+            Assento para evitar permanecer em pé por períodos prolongados.
+          </li>
+          <li>Compreensão e atendimento facilitado durante uma crise.</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>📄 Documentação médica</h2>
+        <p>
+          Abaixo serão disponibilizados os documentos médicos que comprovam as
+          condições descritas nesta página.
+        </p>
+        <div class="doc">
+          <strong>Exame Ginecológico / Endometriose</strong>
+          <button
+            onclick="window.open('./img/Exame Endometriose.jpg', '_blank')"
+          >
+            Abrir documento
+          </button>
+          <span
+            >Exame Ginecológico que comprova a condição de Endometriose
+            Profunda.</span
+          >
+        </div>
+        <div class="doc">
+          <strong>Laudo Ginecológico / Endometriose</strong>
+          <button
+            onclick="window.open('./img/Laudo Endometriose.jpg', '_blank')"
+          >
+            Abrir documento
+          </button>
+          <span
+            >Laudo Ginecológico que comprova a condição de Endometriose
+            Profunda.</span
+          >
+        </div>
+        <div class="doc">
+          <strong
+            >Exame Urológico / Bexiga Hiperativa e cistite intersticial</strong
+          >
+          <button onclick="window.open('./img/Exame1.jpg', '_blank')">
+            Abrir documento
+          </button>
+          <span
+            >Exame Urológico que comprova a condição de Bexiga Hiperativa e
+            cistite intersticial.</span
+          >
+        </div>
+        <div class="doc">
+          <strong
+            >Exame Urológico / Bexiga Hiperativa e cistite intersticial</strong
+          >
+          <button onclick="window.open('./img/Exame2.jpg', '_blank')">
+            Abrir documento
+          </button>
+          <span
+            >Exame urológico o que comprova a condição de Bexiga Hiperativa e
+            cistite intersticial.</span
+          >
+        </div>
+        <div class="doc">
+          <strong>Laudo de Urologia / Bexiga Hiperativa</strong>
+          <button onclick="window.open('./img/Laudo Bexiga.jpg', '_blank')">
+            Abrir documento
+          </button>
+          <span
+            >Laudo de Urologia que comprova a condição de Bexiga
+            Hiperativa.</span
+          >
+        </div>
+            <div class="doc">
+              <strong
+              >Exame Gastroenterológico / Sibo</strong
+              >
+              <button onclick="window.open('./img/Exame sibo 1.jpg', '_blank')">
+                Abrir documento
+              </button>
+              <span
+                >Exame gastoenterológico o que comprova a condição de Sibo.</span
+                >
+            </div>
+
+            <div class="doc">
+              <strong
+              >Exame Gastroenterológico / Sibo</strong
+              >
+              <button onclick="window.open('./img/Exame sibo 2.jpg', '_blank')">
+              Abrir documento
+              </button>
+              <span
+              >Exame gastoenterológico o que comprova a condição de Sibo.</span
+              >
+            </div>
+
+            <div class="doc">
+            <strong>Laudo de Gastroenterologia / SIBO</strong>
+            <button onclick="window.open('./img/Laudo Sibo2.jpg', '_blank')">
+            Abrir documento
+            </button>
+            <span
+            >Laudo de Gastroenterologia que comprova a condição de SIBO.</span
+            >
+            </div>
+
+            Hiperativa.</span
+            >
+              </div>
+        <div class="notice">
+          <strong>Proteção de dados:</strong> antes de publicar documentos
+          médicos, considere ocultar informações pessoais desnecessárias, como
+          CPF, endereço, telefone e outros dados que não sejam necessários.
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>🌻 Uma condição invisível continua sendo real</h2>
+        <p>
+          Nem toda condição de saúde pode ser percebida visualmente. Agradeço
+          pelo respeito, compreensão, empatia e por facilitar meu acesso de
+          forma humanizada quando eu precisar.
+        </p>
+      </section>
+
+      <footer>
+        🌻 Página informativa pessoal • Emanuela Carla<br />
+        Documentação médica disponibilizada pela própria titular.
+      </footer>
+    </main>
+  </body>
+</html>
